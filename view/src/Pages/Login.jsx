@@ -1,5 +1,5 @@
 
-//import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import {
   Box,
   Button,
@@ -18,10 +18,13 @@ import axios from "axios";
 import { useContext } from "react";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-// import { AuthContext } from "../context/AuthContext";
+import { useDispatch } from "react-redux";
+import { loginUserRequest } from "../Redux/action";
+
+
 const initial = {
   email: "",
-  pass: "",
+  password: "",
 };
 
 export const Login = () => {
@@ -29,11 +32,9 @@ export const Login = () => {
   const [formData, setFormData] = useState(initial);
   let [loading, setLoading] = useState(false);
   const location = useLocation();
-  // console.log(location.state)
   const navigate = useNavigate();
-  //const { login } = useContext(AuthContext);
-  // console.log(isAdminAuth);
   const toast = useToast();
+  const dispatch=useDispatch()
   const handleChange = (e) => {
     let { name, value } = e.target;
     setFormData((prev) => {
@@ -45,52 +46,31 @@ export const Login = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(formData);
-    setLoading(true);
-    try {
-      let response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/user/login`,
-        formData
-      );
-      // console.log(response.data.token);
-      if (response.data.token && response.data.user) {
-        setLoading(false);
-      //  login(response.data.token, response.data.user);
-        setFormData(initial);
-        toast({
-          title: "Login Successfull",
-          description: `Welcome ${response.data.user} 🤖`,
-          position: "top",
-          status: "success",
-          variant: "top-accent",
-          duration: 2000,
-          isClosable: true,
-        });
-        navigate("/notes");
-      } else {
-        setLoading(false);
-        toast({
-          title: "Invalid Credentials",
-          position: "top",
-          status: "error",
-          variant: "top-accent",
-          duration: 2000,
-          isClosable: true,
-        });
-      }
-      //   navigate("/");
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-      toast({
-        title: "Server Error",
-        position: "top-right",
-        status: "error",
-        variant: "top-accent",
-        duration: 2000,
-        isClosable: true,
-      });
-    }
+dispatch(loginUserRequest(formData)).then((res)=>{
+  toast({
+    title: "Login Successfull",
+    description: `Welcome ${res.data.message} `,
+    position: "top",
+    status: "success",
+    variant: "top-accent",
+    duration: 2000,
+    isClosable: true,
+  });
+ navigate("/")
+}).catch((err)=>{
+  console.log(err)
+  toast({
+    title: "Server Error",
+    position: "top-right",
+    status: "error",
+    variant: "top-accent",
+    duration: 2000,
+    isClosable: true,
+  });
+})
+  setFormData(initial)
+
+
   };
   return (
     <Box height={"100vh"} padding={"20px"} backgroundColor={"#F3E5F5"}>
@@ -125,11 +105,11 @@ export const Login = () => {
                 </FormLabel>
                 <Input
                   border={"1px dotted gray"}
-                  type={"text"}
+                  type={"email"}
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder={"Email"}
+                  placeholder={"Enter Your Email"}
                 ></Input>
               </SimpleGrid>
             </FormControl>
@@ -144,15 +124,15 @@ export const Login = () => {
                 </FormLabel>
                 <HStack>
                   <Input
-                    name="pass"
+                    name="password"
                     border={"1px dotted gray"}
-                    placeholder="Password"
-                    value={formData.pass}
+                    placeholder="Type Password"
+                    value={formData.password}
                     onChange={handleChange}
                     type={showpass1 ? "text" : "password"}
                   ></Input>
                   <Button onClick={() => setShowpass1((prev) => !prev)}>
-                  {/* //  {showpass1 ? <ViewOffIcon /> : <ViewIcon />} */}
+                  {showpass1 ? <AiFillEye /> : <AiFillEyeInvisible />}
                   </Button>
                 </HStack>
               </SimpleGrid>
@@ -166,25 +146,7 @@ export const Login = () => {
                 mt={"30px"}
                 pt={2}
               >
-                {loading ? (
-                  <Button
-                    type={"submit"}
-                    variant="outline"
-                    border={"1px solid #F06292"}
-                    isLoading
-                    loadingText="Logging In"
-                    size="lg"
-                    bg={"#F06292"}
-                    color={"white"}
-                    borderRadius="5px"
-                    _hover={{
-                      bg: "#F06292",
-                      color: "white",
-                    }}
-                  >
-                    Login
-                  </Button>
-                ) : (
+              
                   <Button
                     type={"submit"}
                     variant="outline"
@@ -199,7 +161,7 @@ export const Login = () => {
                   >
                     Login
                   </Button>
-                )}
+            
               </Stack>
             </FormControl>
             <Box>

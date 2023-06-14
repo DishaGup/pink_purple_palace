@@ -1,20 +1,26 @@
 import {
     Flex,
+    Input,
     Menu,
     MenuButton,
     MenuItem,
     MenuList,
     Text,
     useDisclosure,
-    useToast,
+    useToast,Stack,HStack
   } from "@chakra-ui/react";
   import { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
   import { NavLink, useNavigate } from "react-router-dom";
-//   import { AuthContext } from "../context/AuthContext";
-  
+import { USER_LOGOUT_SUCCESS } from "../Redux/actionTypes";
+import SearchBar from "./SearchBar";
+import {FcSearch} from 'react-icons/fc'
   export const Navbar = () => {
-    const { isOpen } = useDisclosure();
+   
     const toast = useToast();
+const {userDetails}=useSelector((store)=>store.reducer)
+const dispatch=useDispatch()
+const { isOpen, onOpen, onClose } = useDisclosure()
     const navigate = useNavigate();
     const defaultLinkStyle = { color: "black" };
     const activeLinkStyle = {
@@ -22,8 +28,7 @@ import {
       textDecoration: "underline",
       fontWeight: "500",
     };
-  // const { logout, name, token, auth } = useContext(AuthContext);
-    //   console.log(name);
+
     return (
       <Flex
         width={"100%"}
@@ -54,8 +59,8 @@ import {
         {/* {token && auth ? ( */}
           <Flex>
             <Menu>
-              <MenuButton isOpen={isOpen}>
-                <Text fontSize={"1.3rem"}>{"name"}</Text>
+              <MenuButton >
+                <Text fontSize={"1.3rem"}>{userDetails.name?userDetails.name : "User"}</Text>
               </MenuButton>
               <MenuList padding={"20px"} boxShadow={"xl"}>
                 <MenuItem
@@ -72,7 +77,7 @@ import {
                       duration: 4000,
                       isClosable: true,
                     });
-                  //  logout();
+                  dispatch({type:USER_LOGOUT_SUCCESS})
                     navigate("/");
                   }}
                 >
@@ -91,17 +96,19 @@ import {
           >
             <Text fontSize={"1.3rem"}>Login</Text>
           </NavLink>
-        {/* )} */}
-  
-        <NavLink
-          to={"/notes"}
-          style={({ isActive }) => {
-            return isActive ? activeLinkStyle : defaultLinkStyle;
-          }}
-          end
-        >
-          <Text fontSize={"1.3rem"}>Notes</Text>
-        </NavLink>
-      </Flex>
+    <HStack>
+      {/* <FcSearch/> */}
+     <Input type="search"  onClick={onOpen} onChange={onOpen} placeholder="write coin name..." />
+
+{
+  isOpen && <SearchBar  isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+}
+
+
+    </HStack>
+
+
+
+          </Flex>
     );
   };

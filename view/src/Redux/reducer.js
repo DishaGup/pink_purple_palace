@@ -1,6 +1,9 @@
 import {
+  USER_DATA_REQUEST_SUCCESS,
   USER_LOGIN_REQUEST_SUCCESS,
-  USER_REGISTER_REQUEST_SUCCESS,
+ 
+  USER_LOGOUT_SUCCESS,
+ 
   USER_REQUEST_FAILURE,
   USER_REQUEST_PENDING,
   USER_REQUEST_SUCCESS,
@@ -11,6 +14,8 @@ const initial = {
   error: false,
   bookmarkedData: [],
   userDetails: [],
+  token:"",
+  singleData:[]
 };
 
 export const reducer = (state = initial, { type, payload }) => {
@@ -25,17 +30,25 @@ export const reducer = (state = initial, { type, payload }) => {
       return {
         ...state,
         loading: false,
-        bookmarkedData: payload,
+        userDetails:payload.userD,
+        token:payload.token
       };
       break;
-    case USER_REGISTER_REQUEST_SUCCESS:
+    case USER_DATA_REQUEST_SUCCESS:
       return {
         ...state,
         loading: false,
-        userDetails: payload,
+        bookmarkedData: payload.users,
       };
       break;
-
+      case USER_LOGOUT_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+           userDetails:[],
+           token:""
+        };
+        break;
     case USER_REQUEST_FAILURE:
       return {
         ...state,
