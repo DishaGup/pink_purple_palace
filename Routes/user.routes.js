@@ -18,7 +18,7 @@ userRouter.post("/register", async (req, res) => {
       return res.status(200).json({ message: "Email already exists, Please Login" });
     }
 
-    bcrypt.hash(password, 5, async (err, hash) => {
+    bcrypt.hash(password, 3, async (err, hash) => {
     
       // create a new user
       const user = new UserModel({
@@ -50,7 +50,7 @@ userRouter.post("/login", async (req, res) => {
        
         if (result) {
           const token = jwt.sign(
-            { userId: user._id, userName: user.name },       // passing userId and userName using jwt
+            { userId: user._id, name: user.name },       // passing userId and userName using jwt
             "broker"
           );
 

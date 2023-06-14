@@ -10,9 +10,9 @@ const auth = (req, res, next) => {
       const decoded = jwt.verify(token.split(" ")[1], "broker");
       if (decoded) {
         req.body.userId = decoded.userId;
-        req.body.userName = decoded.userName;
+        req.body.userName = decoded.name;
 
-        //this is to create relationship using userId and userName 
+        //this is to create relationship using userId and name
 
         next();
       }
