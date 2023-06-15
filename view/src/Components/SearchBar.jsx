@@ -21,6 +21,7 @@ import {
   import { useDispatch, useSelector } from "react-redux";
 import useThrottle from "../CustomHook/useThrottle";
 import { searchCoinName } from "../Redux/action";
+import CoinComponent from "./CoinComponent";
   function SearchBar({onOpen,isOpen,onClose}) {
     const [searchText, setsearchText] = useState("");
     const [search, setSearch] = useState([]);
@@ -28,39 +29,41 @@ import { searchCoinName } from "../Redux/action";
     const throttledText = useThrottle(searchText, 1000);
     const dispatch = useDispatch();
     const {token}=useSelector((store)=>store.reducer)
+    console.log(throttledText,'thro')
     useEffect(() => {
-      
-      dispatch(searchCoinName(throttledText,token))
+      if(throttledText.length==0){
+        return
+      }
+      dispatch(searchCoinName(throttledText))
         .then((res) => {
-        
-        console.log(res)
+        setSearch(res.coins)
         })
         .catch((err) => console.log(err));
     }, [throttledText]);
     
-    // useEffect(() => {
-    //   if (throttledText === "") {
-    //     setSearch([]);
-    //   } else {
+    useEffect(() => {
+      if (throttledText === "") {
+        setSearch([]);
+      } else {
       
-    //     if (Products && Products.length > 0) {
-    //       let newSuggestions = Products.filter((item) => {
-    //         return item.title
-    //           .split(" ")
-    //           .join("")
-    //           .trim()
-    //           .toLowerCase()
-    //           .indexOf(throttledText) !== -1
-    //           ? true
-    //           : false;
-    //       });
-    //       setSearch(newSuggestions);
-    //       setShowDropdown.on();
-    //     }
-    //   }
-    //   // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [throttledText]);
-    // // console.log(search);
+        if (search && search.length > 0) {
+          let newSuggestions = search.filter((item) => {
+            return item.name
+              .split(" ")
+              .join("")
+              .trim()
+              .toLowerCase()
+              .indexOf(throttledText) !== -1
+              ? true
+              : false;
+          });
+          setSearch(newSuggestions);
+          setShowDropdown.on();
+        }
+      }
+     
+    }, [throttledText]);
+     console.log(search);
     const [add, setP] = useState("");
   
     return (
@@ -77,9 +80,9 @@ import { searchCoinName } from "../Redux/action";
           <DrawerCloseButton />
         
 
-          <DrawerBody mt="50px">
+          <DrawerBody mt="40px">
   
- <Flex justify={"space-around"} minH={"40px"} py="10px" align={"center"}>
+ <Flex justify={"space-around"} minH={"40px"} py="2px" align={"center"}>
           <Flex
             gap={0.1}
             width={{ base: "100%", md: "90%" }}
@@ -95,27 +98,26 @@ import { searchCoinName } from "../Redux/action";
             type="search"
             onChange={(e) => setsearchText(e.target.value)}
           />
-            {searchText.length > 0 && search.length > 0 && (
+            {search && search.length > 0 && (
               <Box
               position="absolute"
               zIndex="100"
               bgColor="white"
               overflow="scroll"
              
-              maxH="400px"
+              maxH="700px"
               m="auto"
               px={3}
               top="calc(100% + 8px)" 
               left={0} 
               right={0} 
-              border="2px solid gray"
-              scrollBehavior="smooth"
-               
+            
+            
               >
-                {/* {search.map((item, i) => {
+                {search.map((item, i) => {
                   return (
                     <Link
-                      href={`/products/:category/single/${item._id}`}
+                      href={`/single/stock/${item.id}`}
                       target="_blank"
                       key={i + 1}
                       borderBottom={'1px solid gray'}
@@ -126,11 +128,11 @@ import { searchCoinName } from "../Redux/action";
                         cursor="pointer"
                         onClick={setShowDropdown.off}
                       >
-                        {item.title}
+                        {item.name}
                       </Text>
                     </Link>
                   );
-                })} */}
+                })}
               </Box>
             )}
           </Flex>

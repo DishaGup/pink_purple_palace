@@ -14,9 +14,9 @@ import {
   HStack,
   VStack,
   Heading,
-  Text,Box,Image, useDisclosure,Button, Select, Input
+  Text,Box,Image, useDisclosure,Button, Select, Input, useToast
 } from '@chakra-ui/react'
-import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { fetchAllStocks, userAddToBookmarked } from '../Redux/action'
 import { useDispatch, useSelector } from 'react-redux';
 import BookMarkTable from '../Components/BookMarkTable';
@@ -25,17 +25,48 @@ import CoinComponent from '../Components/CoinComponent';
 const Homepage = () => {
 const [stocksData,setStocksData]=useState([])
 const dispatch=useDispatch()
+const navigate=useNavigate()
 const {token,bookmarkedData}=useSelector((store)=>store.reducer)
-const [visibleRows, setVisibleRows] = useState([]);
-  
+const [visibleRows, setVisibleRows] = useState([1,5]);
+const toast=useToast()
 
-//console.log(token,"token")
+
 useEffect(()=>{
 dispatch(fetchAllStocks(1)).then((res)=>setStocksData(res.data))
 },[])
 
 const handleAddToBookMark=(data)=>{
-  dispatch(userAddToBookmarked(data,token))
+  
+  if(!token ){
+    toast({
+      title: "Login to Your Account",
+      position: "top",
+      status: "info",
+      variant: "top-accent",
+      duration: 3000,
+      isClosable: true,
+    });
+  
+  setTimeout(() => {
+    navigate("/login")
+  }, 2000);
+   return   
+  }
+
+ const isAlreadyBookmarked = bookmarkedData.some((item) => item.id === data.id);
+
+ if (!isAlreadyBookmarked) {
+  dispatch(userAddToBookmarked(data, token));
+}else{
+  toast({
+    title: "Already in WatchList",
+    position: "top",
+    status: "info",
+    variant: "top-accent",
+    duration: 2000,
+    isClosable: true,
+  });
+}
 
 }
 
@@ -46,10 +77,15 @@ const handleToggleRow = (rowIndex) => {
     setVisibleRows([...visibleRows, rowIndex]);
   }
 };
+
+
+
+
+
   return (
    <>
 
- {/* <BookMarkTable /> */}
+  <BookMarkTable  /> 
 
     <TableContainer w='95%' m='auto'>
   <Table variant='simple' >
@@ -77,8 +113,8 @@ const handleToggleRow = (rowIndex) => {
    stocksData?.map((el,index)=>
    
    <Tr key={index}  >
-   <Td > <HStack>  <BiStar onClick={()=>handleAddToBookMark(el)}  /> <Text as="span" >{el.market_cap_rank}</Text> </HStack> </Td>
-   <Td> <Button  onClick={() => handleToggleRow(index)}>
+   <Td > <HStack>  <BiStar  cursor={'pointer'} onClick={()=>handleAddToBookMark(el)}  /> <Text as="span" >{el.market_cap_rank}</Text> </HStack> </Td>
+   <Td> <Button bg='0 0' outline='none' _hover={{bg:"none"}} cursor={'pointer'}  color={visibleRows.includes(index)?"yellow":"none" }  onClick={() => handleToggleRow(index)}>
    {visibleRows.includes(index) ? (
                       <AiFillEye />
                     ) : (

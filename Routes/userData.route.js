@@ -30,7 +30,7 @@ userDataRouter.post("/add", async (req, res) => {
 userDataRouter.delete("/delete/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const users = UserDataModel.findByIdAndRemove({ _id: id });
+    await UserDataModel.findByIdAndDelete({ _id: id });
     res.status(201).send({ message: "deleted Successfully" });
   } catch (error) {
     res.status(400).json({ error: error.messsage });

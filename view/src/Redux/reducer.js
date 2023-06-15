@@ -1,4 +1,5 @@
 import {
+  SEARCH_SINGLE_STOCKS,
   USER_DATA_REQUEST_SUCCESS,
   USER_LOGIN_REQUEST_SUCCESS,
  
@@ -11,11 +12,11 @@ import {
 
 const initial = {
   loading: false,
-  error: false,
+  error: "",
   bookmarkedData: [],
   userDetails: [],
   token:"",
-  singleData:[]
+  singleStock:[]
 };
 
 export const reducer = (state = initial, { type, payload }) => {
@@ -49,11 +50,18 @@ export const reducer = (state = initial, { type, payload }) => {
            token:""
         };
         break;
+        case SEARCH_SINGLE_STOCKS:
+          return {
+            ...state,
+            loading: false,
+           singleStock:payload
+          };
+          break;
     case USER_REQUEST_FAILURE:
       return {
         ...state,
         loading: false,
-        error: true,
+        error:payload?.ressponse?.data?.message,
       };
       break;
 

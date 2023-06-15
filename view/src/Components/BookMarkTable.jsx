@@ -23,7 +23,14 @@ const BookMarkTable = () => {
 const dispatch=useDispatch()
 const {bookmarkedData,token}=useSelector((store)=>store.reducer)
 const [show,setShow] =useState(false)
+const [visibleRows, setVisibleRows] = useState([0,1,2,3,4]);
+
 useEffect(()=>{
+
+  if(!token){
+    return
+  }
+
 dispatch(userBookMarkedDataFetch(token))
 },[])
 const handleRemoveBookmark=(id)=>{
@@ -31,19 +38,41 @@ const handleRemoveBookmark=(id)=>{
 dispatch(userRemoveFromBookMark(id,token))
 
 }
-      return (
+    
+const handleToggleRow = (rowIndex) => {
+  if (visibleRows.includes(rowIndex)) {
+    setVisibleRows(visibleRows.filter((row) => row !== rowIndex));
+  } else {
+    setVisibleRows([...visibleRows, rowIndex]);
+  }
+};
+
+
+
+if(!token){
+  return <Text> Please Login To your account To see WatchList</Text>
+}
+
+return (
        <>
-        <TableContainer w='80%' m='auto'>
+        <TableContainer w='95%' m='auto' mt='50px'>
       <Table variant='simple' bg='black'>
         <TableCaption>WatchList Data</TableCaption>
         <Thead bg= '#FDD835'>
           <Tr>
-            <Th></Th>
-            <Th></Th>
-            <Th>Coin</Th>
-            <Th>Price</Th>
-            <Th >24th Change</Th>
-            <Th >Market Cap</Th>
+          <Th>#</Th>
+        <Th></Th>
+        <Th>Coin</Th>
+
+        {visibleRows.length > 0 && (
+                <>
+                  <Th>Price</Th>
+                  <Th> 1h</Th>
+                  <Th>24th Change</Th>
+                  <Th>Market Cap</Th>
+                </>
+              )}
+   
           </Tr>
         </Thead>
         <Tbody color='white' > 
@@ -53,20 +82,27 @@ dispatch(userRemoveFromBookMark(id,token))
        
        <Tr key={index}>
      
-      <Td > <BiStar onClick={()=>handleRemoveBookmark(el._id)} color='yellow' /> </Td>
-      
-      <Td> <Button onClick={() => setShow((prev) => !prev)}>
-                  {show ? <AiFillEye /> : <AiFillEyeInvisible />}
+      <Td > <BiStar cursor={'pointer'}  onClick={()=>handleRemoveBookmark(el._id)} color='yellow' /> </Td>
+                  <Td   > <Button bg='0 0' bgColor={'transparent'} _hover={{bg:"none"}} cursor={'pointer'}  outline='none' color={visibleRows.includes(index)?"yellow":"none" }  onClick={() => handleToggleRow(index)}>
+         {visibleRows.includes(index) ? (
+                      <AiFillEye />
+                    ) : (
+                      <AiFillEyeInvisible />
+                    )}
                   </Button></Td>
-      
-       <Td> <CoinComponent {...el} /> </Td>
- 
-       <Td>{el.current_price}</Td>
-       <Td >{el.price_change_24h}</Td>
-       <Td>{el.market_cap}</Td>
+                  <Td> <CoinComponent {...el} /> </Td>
+                  {visibleRows.includes(index) && (
+                  <>
+                    <Td>₹{el.current_price.toLocaleString()}</Td>
+                    <Td color={el.price_change_percentage_24h.toFixed(2)>0?"green":"red"} >{el.price_change_percentage_24h.toFixed(2)}%</Td>
+                    <Td>₹{el.price_change_24h.toLocaleString()}</Td>
+                    <Td>₹{el.market_cap.toLocaleString()}</Td>
+                  </>
+                )} 
+   
      </Tr>  
        
-       )) :( <Heading>No BookMarked Data</Heading> )    
+       )) :( <Tr> <Heading fontSize={'18px'} >No WatchList Data</Heading>    </Tr> )    
     }
         </Tbody>
      

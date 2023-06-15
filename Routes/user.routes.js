@@ -51,23 +51,23 @@ userRouter.post("/login", async (req, res) => {
           );
 
           res.status(200).json({
-            message: "Login Sucessful",
+            message: "Login Successful",
             token,
             userD:[user]
           });
         } else {
           res
             .status(401)
-            .send({ message: "Authorization revoked, Wrong Credentials" });
+            .send({ message: "Invalid password" });
         }
       });
     } else {
       res
         .status(401)
-        .send({ message: "Authorization revoked, Wrong Credentials" });
+        .send({ message: "User not found" });
     }
   } catch (error) {
-    res.status(401).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 });
 

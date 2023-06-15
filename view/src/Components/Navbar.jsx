@@ -35,7 +35,7 @@ const { isOpen, onOpen, onClose } = useDisclosure()
         margin={"auto"}
         justifyContent={"space-around"}
         alignItems={"center"}
-        bg={"#6CB0A8"}
+        bg={"#FBC02D"}
         padding={"10px"}
       >
         <NavLink
@@ -60,13 +60,13 @@ const { isOpen, onOpen, onClose } = useDisclosure()
           <Flex>
             <Menu>
               <MenuButton >
-                <Text fontSize={"1.3rem"}>{userDetails.name?userDetails.name : "User"}</Text>
+                <Text fontSize={"1.3rem"}>Hi, {userDetails && userDetails.length==1?`${userDetails[0].name}` : "User"}</Text>
               </MenuButton>
               <MenuList padding={"20px"} boxShadow={"xl"}>
                 <MenuItem
                   borderRadius={"2px"}
                   _hover={{
-                    bg: "#4DB6AC"
+                    bg: "#FDD835"
                   }}
                   onClick={() => {
                     toast({

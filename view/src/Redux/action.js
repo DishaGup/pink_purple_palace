@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  SEARCH_SINGLE_STOCKS,
   USER_DATA_REQUEST_SUCCESS,
   USER_LOGIN_REQUEST_SUCCESS,
   USER_REQUEST_FAILURE,
@@ -8,11 +9,11 @@ import {
 
 export const url = `http://localhost:8080`;
 
-export const fetchAllStocks = (page) => (dispatch) => {
+export const fetchAllStocks = (page,limit=20) => (dispatch) => {
   dispatch({ type: USER_REQUEST_PENDING });
   return axios
     .get(
-      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&order=market_cap_desc&per_page=20&page=${page}&sparkline=false&locale=en&precision=6`
+      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&order=market_cap_desc&per_page=${limit}&page=${page}&sparkline=false&locale=en&precision=6`
     )
     .then((res) => {
       return res;
@@ -39,7 +40,7 @@ export const loginUserRequest = (data) => (dispatch) => {
       return res;
     })
     .catch((err) => {
-      dispatch({ type: USER_REQUEST_FAILURE });
+      dispatch({ type: USER_REQUEST_FAILURE,payload:err });
       return err;
     });
 };
@@ -54,7 +55,7 @@ export const userAddToBookmarked = (data, token) => (dispatch) => {
       },
     })
     .then((res) => dispatch(userBookMarkedDataFetch(token)))
-    .then((err) => dispatch({ type: USER_REQUEST_FAILURE }));
+    .then((err) => dispatch({ type: USER_REQUEST_FAILURE ,payload:err }));
 };
 
 export const userBookMarkedDataFetch = (token) => (dispatch) => {
@@ -68,7 +69,7 @@ export const userBookMarkedDataFetch = (token) => (dispatch) => {
     .then((res) =>
       dispatch({ type: USER_DATA_REQUEST_SUCCESS, payload: res.data })
     )
-    .then((err) => dispatch({ type: USER_REQUEST_FAILURE }));
+    .then((err) => dispatch({ type: USER_REQUEST_FAILURE,payload:err }));
 };
 
 export const userRemoveFromBookMark=(id,token)=>(dispatch)=>{
@@ -80,22 +81,26 @@ export const userRemoveFromBookMark=(id,token)=>(dispatch)=>{
      },
    })
    .then((res) => dispatch(userBookMarkedDataFetch(token)))
-   .then((err) => dispatch({ type: USER_REQUEST_FAILURE }));
+   .then((err) => dispatch({ type: USER_REQUEST_FAILURE,payload:err }));
 };
 
-export const searchCoinName=(text,token)=>(dispatch)=>{
+export const searchCoinName=(text)=>(dispatch)=>{
 
    dispatch({ type: USER_REQUEST_PENDING });
   return axios
-     .get(`${url}/data/user/search?name=${text.toString()}`, {
-       headers: {
-         Authorization: `Bearer ${token}`,
-       },
-     })
-     .then((res) =>
-      res
+     .get(`https://api.coingecko.com/api/v3/search?query=${text.toString()}`)
+     .then((res) =>{ dispatch({type:SEARCH_SINGLE_STOCKS})
+      console.log(res.data)
+     return res.data}
      )
      .then((err) =>err);
+}
 
 
+export const getSingleStockDetails=(id)=>async(dispatch)=>{
+
+let allData=await dispatch(fetchAllStocks(1,1500)).then((res)=>res.data).catch((err)=>err)
+
+return allData.filter((el)=>el.id==id)
+ 
 }

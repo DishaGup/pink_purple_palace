@@ -18,7 +18,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUserRequest } from "../Redux/action";
 
 
@@ -34,6 +34,8 @@ export const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const toast = useToast();
+  const {error} =useSelector((store)=>store.reducer)
+//console.log(error)
   const dispatch=useDispatch()
   const handleChange = (e) => {
     let { name, value } = e.target;
@@ -44,36 +46,49 @@ export const Login = () => {
       };
     });
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-dispatch(loginUserRequest(formData)).then((res)=>{
-  toast({
-    title: "Login Successfull",
-    description: `Welcome ${res.data.message} `,
-    position: "top",
-    status: "success",
-    variant: "top-accent",
-    duration: 2000,
-    isClosable: true,
-  });
- navigate("/")
-}).catch((err)=>{
-  console.log(err)
-  toast({
-    title: "Server Error",
-    position: "top-right",
-    status: "error",
-    variant: "top-accent",
-    duration: 2000,
-    isClosable: true,
-  });
-})
-  setFormData(initial)
+    await dispatch(loginUserRequest(formData))
+    .then((res) => {
+      if (res && res.data && res.data.message === "Login Successful") {
+        toast({
+          title: "Login Successful",
+          description: `Welcome ${res.data.message}`,
+          position: "top",
+          status: "success",
+          variant: "top-accent",
+          duration: 2000,
+          isClosable: true,
+        });
+        navigate("/");
+      } else {
+        toast({
+          title: "Wrong Credentials",
+          position: "top-right",
+          status: "error",
+          variant: "top-accent",
+          duration: 2000,
+          isClosable: true,
+        });
+      }
+    })
+    .catch((err) => {
+        toast({
+        title: "Server Error",
+        position: "top-right",
+        status: "error",
+        variant: "top-accent",
+        duration: 2000,
+        isClosable: true,
+      });
+    });
+  setFormData(initial);
+  
 
 
   };
   return (
-    <Box height={"100vh"} padding={"20px"} backgroundColor={"#F3E5F5"}>
+    <Box height={"100vh"} padding={"20px"} >
       <Box
         margin={"80px auto"}
         backgroundColor={"white"}
@@ -81,6 +96,7 @@ dispatch(loginUserRequest(formData)).then((res)=>{
         borderRadius={"5px"}
         boxShadow={"md"}
         padding={"20px"}
+        border={'1px solid yellow'}
       >
         <Center>
           <Text as={"h2"} fontWeight={"500"} fontSize={"1.5rem"}>
@@ -151,11 +167,11 @@ dispatch(loginUserRequest(formData)).then((res)=>{
                     type={"submit"}
                     variant="outline"
                     size="lg"
-                    border={"1px solid #F06292"}
-                    color={"#F06292"}
+                    border={"1px solid #F9A825"}
+                    color={"#FFEB3B"}
                     borderRadius="5px"
                     _hover={{
-                      bg: "#F06292",
+                      bg: "#F9A825",
                       color: "white",
                     }}
                   >
