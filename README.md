@@ -12,6 +12,7 @@ git clone https://github.com/DishaGup/pink_purple_palace.git
 
 ### Backend
 
+
 npm install
 
 ### Frontend
@@ -419,14 +420,17 @@ The project follows a specific folder structure:
     - **Private route**: Function to prevent unauthorized authentication.
 
 
-## Snapshots 
+# Snapshots 
 
 ## Login Page
+![login](https://github.com/DishaGup/pink_purple_palace/assets/115460391/504c6552-a985-4743-ab8e-8b9e530f1446)
 
 
 ---
 
-## Registeratin Page 
+## Registeration Page 
+
+![registeration](https://github.com/DishaGup/pink_purple_palace/assets/115460391/4d9fea62-19bf-4898-81b3-df6aec6f9916)
 
 
 ---
@@ -436,8 +440,18 @@ The project follows a specific folder structure:
 
 - User is Not Logged In
 
+![user-not-logged-in](https://github.com/DishaGup/pink_purple_palace/assets/115460391/937903e2-c073-41d9-820d-8d4f1a1ed6e9)
 
 - User is Logged In
 
+![user-logged-in](https://github.com/DishaGup/pink_purple_palace/assets/115460391/f56f2ecf-2a38-4baf-bd19-2836639e8aaa)
 
 - Search bar
+  
+![searchbar](https://github.com/DishaGup/pink_purple_palace/assets/115460391/5f963af5-91e6-4e1f-ac97-f6f609a95e0c)
+
+---
+
+## Single Stock Page
+
+![single-stock-page](https://github.com/DishaGup/pink_purple_palace/assets/115460391/7a5b638a-eb5a-4bfd-a6bb-71d1d8aa1598)
