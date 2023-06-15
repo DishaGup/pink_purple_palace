@@ -91,7 +91,7 @@ export const Register = () => {
   };
 
   return (
-    <Box  padding={"20px"}>
+    <Box padding={"20px"}>
       <Box
         border={"1px solid white"}
         margin={"auto"}
@@ -240,19 +240,18 @@ export const Register = () => {
                 mt={"30px"}
                 pt={2}
               >
-                 <Button
-                    type={"submit"}
-                    variant="outline"
-                    size="lg"
-                    border={"1px solid #F9A825"}
-                    color={"#FFEB3B"}
-                    borderRadius="5px"
-                    _hover={{
-                      bg: "#F9A825",
-                      color: "white",
-                    }}
-                  >
-                
+                <Button
+                  type={"submit"}
+                  variant="outline"
+                  size="lg"
+                  border={"1px solid #F9A825"}
+                  color={"#FFEB3B"}
+                  borderRadius="5px"
+                  _hover={{
+                    bg: "#F9A825",
+                    color: "white",
+                  }}
+                >
                   Register
                 </Button>
               </Stack>

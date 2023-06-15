@@ -1,17 +1,19 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { Navigate } from 'react-router-dom'
+import React from "react";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
-const PrivateRoute = ({children}) => {
+// Component for creating private routes that require authentication
+const PrivateRoute = ({ children }) => {
+  // Accessing the token and bookmarkedData from the Redux store
+  const { token, bookmarkedData } = useSelector((store) => store.reducer);
 
-    const {token,bookmarkedData}=useSelector((store)=>store.reducer)
-   
-    if(!token){
-    return <Navigate to='login' replace='true' />
-    }
+  // If token is not available, redirect to the login page
+  if (!token) {
+    return <Navigate to="login" replace="true" />;
+  }
 
-return children
-  
-}
+  // Render the children components if the user is authenticated
+  return children;
+};
 
-export default PrivateRoute
+export default PrivateRoute;

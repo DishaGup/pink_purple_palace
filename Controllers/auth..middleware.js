@@ -2,8 +2,8 @@ const jwt = require("jsonwebtoken");
 
 const auth = (req, res, next) => {
   const token = req.headers.authorization;
- 
-  // token from headers = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dnZWRJbkFzIjoiYWRtaW4iLCJpYXQiOjE0MjI3Nzk2Mzh9.gzSraSYS8EXBxLN_oWnFSRgCzcmJmMjLiuyu5CSpyHI" 
+
+  // token from headers = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dnZWRJbkFzIjoiYWRtaW4iLCJpYXQiOjE0MjI3Nzk2Mzh9.gzSraSYS8EXBxLN_oWnFSRgCzcmJmMjLiuyu5CSpyHI"
 
   if (token) {
     try {
@@ -17,7 +17,7 @@ const auth = (req, res, next) => {
         next();
       }
     } catch (error) {
-      res.status(400).send({error:error.message});
+      res.status(400).send({ error: error.message });
     }
   } else {
     res.staus(200).send({ msg: "Token Not Found, Please Login again" });

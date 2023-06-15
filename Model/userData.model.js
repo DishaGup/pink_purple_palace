@@ -16,7 +16,7 @@ const userDataSchema = Schema(
     market_cap_change_24h: { type: Number, require: true },
     total_supply: { type: Number, require: true },
     last_updated: { type: Date, default: Date.now() },
-    bookmarked:{type:Boolean,default:false}
+    bookmarked: { type: Boolean, default: false },
   },
   {
     versionKey: false,

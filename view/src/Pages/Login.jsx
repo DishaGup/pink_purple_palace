@@ -1,4 +1,3 @@
-
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import {
   Box,
@@ -21,7 +20,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUserRequest } from "../Redux/action";
 
-
 const initial = {
   email: "",
   password: "",
@@ -34,9 +32,9 @@ export const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const toast = useToast();
-  const {error} =useSelector((store)=>store.reducer)
-//console.log(error)
-  const dispatch=useDispatch()
+  const { error } = useSelector((store) => store.reducer);
+  //return (error)
+  const dispatch = useDispatch();
   const handleChange = (e) => {
     let { name, value } = e.target;
     setFormData((prev) => {
@@ -46,49 +44,46 @@ export const Login = () => {
       };
     });
   };
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     await dispatch(loginUserRequest(formData))
-    .then((res) => {
-      if (res && res.data && res.data.message === "Login Successful") {
+      .then((res) => {
+        if (res && res.data && res.data.message === "Login Successful") {
+          toast({
+            title: "Login Successful",
+            description: `Welcome ${res.data.message}`,
+            position: "top",
+            status: "success",
+            variant: "top-accent",
+            duration: 2000,
+            isClosable: true,
+          });
+          navigate("/");
+        } else {
+          toast({
+            title: "Wrong Credentials",
+            position: "top-right",
+            status: "error",
+            variant: "top-accent",
+            duration: 2000,
+            isClosable: true,
+          });
+        }
+      })
+      .catch((err) => {
         toast({
-          title: "Login Successful",
-          description: `Welcome ${res.data.message}`,
-          position: "top",
-          status: "success",
-          variant: "top-accent",
-          duration: 2000,
-          isClosable: true,
-        });
-        navigate("/");
-      } else {
-        toast({
-          title: "Wrong Credentials",
+          title: "Server Error",
           position: "top-right",
           status: "error",
           variant: "top-accent",
           duration: 2000,
           isClosable: true,
         });
-      }
-    })
-    .catch((err) => {
-        toast({
-        title: "Server Error",
-        position: "top-right",
-        status: "error",
-        variant: "top-accent",
-        duration: 2000,
-        isClosable: true,
       });
-    });
-  setFormData(initial);
-  
-
-
+    setFormData(initial);
   };
   return (
-    <Box height={"100vh"} padding={"20px"} >
+    <Box height={"100vh"} padding={"20px"}>
       <Box
         margin={"80px auto"}
         backgroundColor={"white"}
@@ -96,7 +91,7 @@ export const Login = () => {
         borderRadius={"5px"}
         boxShadow={"md"}
         padding={"20px"}
-        border={'1px solid yellow'}
+        border={"1px solid yellow"}
       >
         <Center>
           <Text as={"h2"} fontWeight={"500"} fontSize={"1.5rem"}>
@@ -148,7 +143,7 @@ export const Login = () => {
                     type={showpass1 ? "text" : "password"}
                   ></Input>
                   <Button onClick={() => setShowpass1((prev) => !prev)}>
-                  {showpass1 ? <AiFillEye /> : <AiFillEyeInvisible />}
+                    {showpass1 ? <AiFillEye /> : <AiFillEyeInvisible />}
                   </Button>
                 </HStack>
               </SimpleGrid>
@@ -162,22 +157,20 @@ export const Login = () => {
                 mt={"30px"}
                 pt={2}
               >
-              
-                  <Button
-                    type={"submit"}
-                    variant="outline"
-                    size="lg"
-                    border={"1px solid #F9A825"}
-                    color={"#FFEB3B"}
-                    borderRadius="5px"
-                    _hover={{
-                      bg: "#F9A825",
-                      color: "white",
-                    }}
-                  >
-                    Login
-                  </Button>
-            
+                <Button
+                  type={"submit"}
+                  variant="outline"
+                  size="lg"
+                  border={"1px solid #F9A825"}
+                  color={"#FFEB3B"}
+                  borderRadius="5px"
+                  _hover={{
+                    bg: "#F9A825",
+                    color: "white",
+                  }}
+                >
+                  Login
+                </Button>
               </Stack>
             </FormControl>
             <Box>

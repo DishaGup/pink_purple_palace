@@ -37,7 +37,6 @@ userDataRouter.delete("/delete/:id", async (req, res) => {
   }
 });
 
-
 userDataRouter.get("/single/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -48,20 +47,17 @@ userDataRouter.get("/single/:id", async (req, res) => {
   }
 });
 
-
-
 userDataRouter.get("/search", async (req, res) => {
-  let filters={}
-    if(req.query.name){
-        filters.name={$regex:req.query.name, $options:"i"}
-    }
-    try {
-     const searchList=await UserDataModel.find(filters).skip(0)
-     res.status(200).send({searchList})   
-    } catch (error) {
-        res.status(400).send({error})
-    }
-    
+  let filters = {};
+  if (req.query.name) {
+    filters.name = { $regex: req.query.name, $options: "i" };
+  }
+  try {
+    const searchList = await UserDataModel.find(filters).skip(0);
+    res.status(200).send({ searchList });
+  } catch (error) {
+    res.status(400).send({ error });
+  }
 });
 
 module.exports = { userDataRouter };
