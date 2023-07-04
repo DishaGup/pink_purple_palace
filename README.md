@@ -423,14 +423,16 @@ The project follows a specific folder structure:
 # Snapshots 
 
 ## Login Page
-![login](https://github.com/DishaGup/pink_purple_palace/assets/115460391/504c6552-a985-4743-ab8e-8b9e530f1446)
+
+![Screenshot (248)](https://github.com/DishaGup/pink_purple_palace/assets/115460391/75d9ae0a-4ebc-4ffb-ae2c-003bdcd00354)
 
 
 ---
 
 ## Registeration Page 
 
-![registeration](https://github.com/DishaGup/pink_purple_palace/assets/115460391/4d9fea62-19bf-4898-81b3-df6aec6f9916)
+
+![Screenshot (247)](https://github.com/DishaGup/pink_purple_palace/assets/115460391/6976b3f5-cba3-43ca-8fb9-7e248b818794)
 
 
 ---
@@ -440,18 +442,19 @@ The project follows a specific folder structure:
 
 - User is Not Logged In
 
-![user-not-logged-in](https://github.com/DishaGup/pink_purple_palace/assets/115460391/937903e2-c073-41d9-820d-8d4f1a1ed6e9)
+![Screenshot (249)](https://github.com/DishaGup/pink_purple_palace/assets/115460391/64b0238b-c30d-45a4-bfe4-a25a69a8378f)
 
 - User is Logged In
-
-![user-logged-in](https://github.com/DishaGup/pink_purple_palace/assets/115460391/f56f2ecf-2a38-4baf-bd19-2836639e8aaa)
+- 
+![Screenshot (255)](https://github.com/DishaGup/pink_purple_palace/assets/115460391/e713ae0f-376c-43ec-8b7c-a229a71d04eb)
 
 - Search bar
   
-![searchbar](https://github.com/DishaGup/pink_purple_palace/assets/115460391/5f963af5-91e6-4e1f-ac97-f6f609a95e0c)
+![Screenshot (253)](https://github.com/DishaGup/pink_purple_palace/assets/115460391/c5fc6293-b2d6-45b6-89a5-737a0b89c301)
 
 ---
 
 ## Single Stock Page
 
-![single-stock-page](https://github.com/DishaGup/pink_purple_palace/assets/115460391/7a5b638a-eb5a-4bfd-a6bb-71d1d8aa1598)
+![Screenshot (254)](https://github.com/DishaGup/pink_purple_palace/assets/115460391/39ca70a4-f51e-4ac6-888a-516bcbe0cde5)
+
